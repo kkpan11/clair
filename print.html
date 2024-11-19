@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="light" dir="ltr">
+<html lang="en" class="light sidebar-visible" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -8,7 +8,7 @@
 
 
         <!-- Custom HTML head -->
-        
+
         <meta name="description" content="Documentation for Clair.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
@@ -31,15 +31,17 @@
 
         <!-- Custom theme stylesheets -->
 
-    </head>
-    <body class="sidebar-visible no-js">
-    <div id="body-container">
+
         <!-- Provide site root to javascript -->
         <script>
             var path_to_root = "";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "coal" : "light";
         </script>
-
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
@@ -61,19 +63,16 @@
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
-            var html = document.querySelector('html');
+            const html = document.documentElement;
             html.classList.remove('light')
             html.classList.add(theme);
-            var body = document.querySelector('body');
-            body.classList.remove('no-js')
-            body.classList.add('js');
+            html.classList.add("js");
         </script>
 
         <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var body = document.querySelector('body');
             var sidebar = null;
             var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
@@ -83,45 +82,25 @@
                 sidebar = 'hidden';
             }
             sidebar_toggle.checked = sidebar === 'visible';
-            body.classList.remove('sidebar-visible');
-            body.classList.add("sidebar-" + sidebar);
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="whatis.html"><strong aria-hidden="true">1.</strong> What is ClairV4</a></li><li class="chapter-item expanded "><a href="howto.html"><strong aria-hidden="true">2.</strong> How Tos</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="howto/getting_started.html"><strong aria-hidden="true">2.1.</strong> Getting Started With ClairV4</a></li><li class="chapter-item expanded "><a href="howto/deployment.html"><strong aria-hidden="true">2.2.</strong> Deployment Models</a></li><li class="chapter-item expanded "><a href="howto/api.html"><strong aria-hidden="true">2.3.</strong> API Definition</a></li><li class="chapter-item expanded "><a href="howto/testing.html"><strong aria-hidden="true">2.4.</strong> Testing ClairV4</a></li></ol></li><li class="chapter-item expanded "><a href="concepts.html"><strong aria-hidden="true">3.</strong> Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="concepts/indexing.html"><strong aria-hidden="true">3.1.</strong> Indexing</a></li><li class="chapter-item expanded "><a href="concepts/matching.html"><strong aria-hidden="true">3.2.</strong> Matching</a></li><li class="chapter-item expanded "><a href="concepts/api_internal.html"><strong aria-hidden="true">3.3.</strong> Internal API</a></li><li class="chapter-item expanded "><a href="concepts/authentication.html"><strong aria-hidden="true">3.4.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="concepts/notifications.html"><strong aria-hidden="true">3.5.</strong> Notifications</a></li><li class="chapter-item expanded "><a href="concepts/updatersandairgap.html"><strong aria-hidden="true">3.6.</strong> Updaters and Airgap</a></li><li class="chapter-item expanded "><a href="concepts/operation.html"><strong aria-hidden="true">3.7.</strong> Operation</a></li></ol></li><li class="chapter-item expanded "><a href="contribution.html"><strong aria-hidden="true">4.</strong> Contribution</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="contribution/building.html"><strong aria-hidden="true">4.1.</strong> Building</a></li><li class="chapter-item expanded "><a href="contribution/commit_style.html"><strong aria-hidden="true">4.2.</strong> Commit Style</a></li><li class="chapter-item expanded "><a href="contribution/releases.html"><strong aria-hidden="true">4.3.</strong> Releases</a></li></ol></li><li class="chapter-item expanded "><a href="reference.html"><strong aria-hidden="true">5.</strong> Reference</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="reference/api.html"><strong aria-hidden="true">5.1.</strong> Api</a></li><li class="chapter-item expanded "><a href="reference/clairctl.html"><strong aria-hidden="true">5.2.</strong> Clairctl</a></li><li class="chapter-item expanded "><a href="reference/config.html"><strong aria-hidden="true">5.3.</strong> Config</a></li><li class="chapter-item expanded "><a href="reference/indexer.html"><strong aria-hidden="true">5.4.</strong> Indexer</a></li><li class="chapter-item expanded "><a href="reference/matcher.html"><strong aria-hidden="true">5.5.</strong> Matcher</a></li><li class="chapter-item expanded "><a href="reference/notifier.html"><strong aria-hidden="true">5.6.</strong> Notifier</a></li><li class="chapter-item expanded "><a href="reference/metrics.html"><strong aria-hidden="true">5.7.</strong> Metrics</a></li></ol></li></ol>
-            </div>
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <!-- Track and set sidebar scroll position -->
-        <script>
-            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
-            sidebarScrollbox.addEventListener('click', function(e) {
-                if (e.target.tagName === 'A') {
-                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
-                }
-            }, { passive: true });
-            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
-            sessionStorage.removeItem('sidebar-scroll');
-            if (sidebarScrollTop) {
-                // preserve sidebar scroll position when navigating via links within sidebar
-                sidebarScrollbox.scrollTop = sidebarScrollTop;
-            } else {
-                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
-                var activeSection = document.querySelector('#sidebar .active');
-                if (activeSection) {
-                    activeSection.scrollIntoView({ block: 'center' });
-                }
-            }
-        </script>
-
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -2351,45 +2330,6 @@ This operation does not require authentication
 <tr><td>cpe</td><td>string</td><td>true</td><td>none</td><td>none</td></tr>
 <tr><td>pretty_name</td><td>string</td><td>true</td><td>none</td><td>none</td></tr>
 </tbody></table>
-</div><h2 id="tocS_SourcePackage"><a class="header" href="#tocS_SourcePackage">SourcePackage</a></h2>
-<!-- backwards compatibility -->
-<a id="schemasourcepackage"></a>
-<a id="schema_SourcePackage"></a>
-<a id="tocSsourcepackage"></a>
-<a id="tocssourcepackage"></a>
-<pre><code class="language-json">{
-  "id": "10",
-  "name": "libapt-pkg5.0",
-  "version": "1.6.11",
-  "kind": "binary",
-  "normalized_version": "",
-  "arch": "x86",
-  "module": "",
-  "cpe": "",
-  "source": {
-    "id": "9",
-    "name": "apt",
-    "version": "1.6.11",
-    "kind": "source",
-    "source": null
-  },
-  "x-widdershins-oldRef": "#/components/examples/Package/value"
-}
-
-</code></pre>
-<p>SourcePackage</p>
-<h3 id="properties-10"><a class="header" href="#properties-10">Properties</a></h3>
-<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Restrictions</th><th>Description</th></tr></thead><tbody>
-<tr><td>id</td><td>string</td><td>true</td><td>none</td><td>A unique ID representing this package</td></tr>
-<tr><td>name</td><td>string</td><td>true</td><td>none</td><td>Name of the Package</td></tr>
-<tr><td>version</td><td>string</td><td>true</td><td>none</td><td>Version of the Package</td></tr>
-<tr><td>kind</td><td>string</td><td>false</td><td>none</td><td>Kind of package. Source</td></tr>
-<tr><td>source</td><td>string</td><td>false</td><td>none</td><td>none</td></tr>
-<tr><td>normalized_version</td><td><a href="reference/api.html#schemaversion">Version</a></td><td>false</td><td>none</td><td>Version is a normalized claircore version, composed of a "kind" and an array of integers such that two versions of the same kind have the correct ordering when the integers are compared pair-wise.</td></tr>
-<tr><td>arch</td><td>string</td><td>false</td><td>none</td><td>none</td></tr>
-<tr><td>module</td><td>string</td><td>false</td><td>none</td><td>none</td></tr>
-<tr><td>cpe</td><td>string</td><td>false</td><td>none</td><td>A CPE identifying the package</td></tr>
-</tbody></table>
 </div><h2 id="tocS_Package"><a class="header" href="#tocS_Package">Package</a></h2>
 <!-- backwards compatibility -->
 <a id="schemapackage"></a>
@@ -2417,13 +2357,13 @@ This operation does not require authentication
 
 </code></pre>
 <p>Package</p>
-<h3 id="properties-11"><a class="header" href="#properties-11">Properties</a></h3>
+<h3 id="properties-10"><a class="header" href="#properties-10">Properties</a></h3>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Restrictions</th><th>Description</th></tr></thead><tbody>
 <tr><td>id</td><td>string</td><td>true</td><td>none</td><td>A unique ID representing this package</td></tr>
 <tr><td>name</td><td>string</td><td>true</td><td>none</td><td>Name of the Package</td></tr>
 <tr><td>version</td><td>string</td><td>true</td><td>none</td><td>Version of the Package</td></tr>
 <tr><td>kind</td><td>string</td><td>false</td><td>none</td><td>Kind of package. Source</td></tr>
-<tr><td>source</td><td><a href="reference/api.html#schemasourcepackage">SourcePackage</a></td><td>false</td><td>none</td><td>A source package affiliated with a Package</td></tr>
+<tr><td>source</td><td><a href="reference/api.html#schemapackage">Package</a></td><td>false</td><td>none</td><td>A package discovered by indexing a Manifest</td></tr>
 <tr><td>normalized_version</td><td><a href="reference/api.html#schemaversion">Version</a></td><td>false</td><td>none</td><td>Version is a normalized claircore version, composed of a "kind" and an array of integers such that two versions of the same kind have the correct ordering when the integers are compared pair-wise.</td></tr>
 <tr><td>arch</td><td>string</td><td>false</td><td>none</td><td>The package's target system architecture</td></tr>
 <tr><td>module</td><td>string</td><td>false</td><td>none</td><td>A module further defining a namespace for a package</td></tr>
@@ -2445,7 +2385,7 @@ This operation does not require authentication
 
 </code></pre>
 <p>Repository</p>
-<h3 id="properties-12"><a class="header" href="#properties-12">Properties</a></h3>
+<h3 id="properties-11"><a class="header" href="#properties-11">Properties</a></h3>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Restrictions</th><th>Description</th></tr></thead><tbody>
 <tr><td>id</td><td>string</td><td>false</td><td>none</td><td>none</td></tr>
 <tr><td>name</td><td>string</td><td>false</td><td>none</td><td>none</td></tr>
@@ -2463,7 +2403,7 @@ This operation does not require authentication
 
 </code></pre>
 <p>Version</p>
-<h3 id="properties-13"><a class="header" href="#properties-13">Properties</a></h3>
+<h3 id="properties-12"><a class="header" href="#properties-12">Properties</a></h3>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Restrictions</th><th>Description</th></tr></thead><tbody>
 <tr><td>Version</td><td>string</td><td>false</td><td>none</td><td>Version is a normalized claircore version, composed of a "kind" and an array of integers such that two versions of the same kind have the correct ordering when the integers are compared pair-wise.</td></tr>
 </tbody></table>
@@ -2493,7 +2433,7 @@ This operation does not require authentication
 
 </code></pre>
 <p>Manifest</p>
-<h3 id="properties-14"><a class="header" href="#properties-14">Properties</a></h3>
+<h3 id="properties-13"><a class="header" href="#properties-13">Properties</a></h3>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Restrictions</th><th>Description</th></tr></thead><tbody>
 <tr><td>hash</td><td><a href="reference/api.html#schemadigest">Digest</a></td><td>true</td><td>none</td><td>A digest string with prefixed algorithm. The format is described here: https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests<br>Digests are used throughout the API to identify Layers and Manifests.</td></tr>
 <tr><td>layers</td><td>[<a href="reference/api.html#schemalayer">Layer</a>]</td><td>true</td><td>none</td><td>[A Layer within a Manifest and where Clair may retrieve it.]</td></tr>
@@ -2519,7 +2459,7 @@ This operation does not require authentication
 
 </code></pre>
 <p>Layer</p>
-<h3 id="properties-15"><a class="header" href="#properties-15">Properties</a></h3>
+<h3 id="properties-14"><a class="header" href="#properties-14">Properties</a></h3>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Restrictions</th><th>Description</th></tr></thead><tbody>
 <tr><td>hash</td><td><a href="reference/api.html#schemadigest">Digest</a></td><td>true</td><td>none</td><td>A digest string with prefixed algorithm. The format is described here: https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests<br>Digests are used throughout the API to identify Layers and Manifests.</td></tr>
 <tr><td>uri</td><td>string</td><td>true</td><td>none</td><td>A URI describing where the layer may be found. Implementations MUST support http(s) schemes and MAY support additional schemes.</td></tr>
@@ -2538,7 +2478,7 @@ This operation does not require authentication
 
 </code></pre>
 <p>BulkDelete</p>
-<h3 id="properties-16"><a class="header" href="#properties-16">Properties</a></h3>
+<h3 id="properties-15"><a class="header" href="#properties-15">Properties</a></h3>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Restrictions</th><th>Description</th></tr></thead><tbody>
 <tr><td>BulkDelete</td><td>[<a href="reference/api.html#schemadigest">Digest</a>]</td><td>false</td><td>none</td><td>An array of Digests to be deleted.</td></tr>
 </tbody></table>
@@ -2555,7 +2495,7 @@ This operation does not require authentication
 
 </code></pre>
 <p>Error</p>
-<h3 id="properties-17"><a class="header" href="#properties-17">Properties</a></h3>
+<h3 id="properties-16"><a class="header" href="#properties-16">Properties</a></h3>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Restrictions</th><th>Description</th></tr></thead><tbody>
 <tr><td>code</td><td>string</td><td>false</td><td>none</td><td>a code for this particular error</td></tr>
 <tr><td>message</td><td>string</td><td>false</td><td>none</td><td>a message with further detail</td></tr>
@@ -2572,7 +2512,7 @@ This operation does not require authentication
 
 </code></pre>
 <p>State</p>
-<h3 id="properties-18"><a class="header" href="#properties-18">Properties</a></h3>
+<h3 id="properties-17"><a class="header" href="#properties-17">Properties</a></h3>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Restrictions</th><th>Description</th></tr></thead><tbody>
 <tr><td>state</td><td>string</td><td>true</td><td>none</td><td>an opaque identifier</td></tr>
 </tbody></table>
@@ -2586,7 +2526,7 @@ This operation does not require authentication
 
 </code></pre>
 <p>Digest</p>
-<h3 id="properties-19"><a class="header" href="#properties-19">Properties</a></h3>
+<h3 id="properties-18"><a class="header" href="#properties-18">Properties</a></h3>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Restrictions</th><th>Description</th></tr></thead><tbody>
 <tr><td>Digest</td><td>string</td><td>false</td><td>none</td><td>A digest string with prefixed algorithm. The format is described here: https://github.com/opencontainers/image-spec/blob/master/descriptor.md#digests<br>Digests are used throughout the API to identify Layers and Manifests.</td></tr>
 </tbody></table>
